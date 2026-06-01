@@ -1,6 +1,6 @@
 package br.ufpb.dcx.amigosecreto;
 
-public class MainSistemaAmigo {
+public class TestaSistemaAmigo {
     public static void main(String[] args) {
         SistemaAmigo sistema = new SistemaAmigo();
 
