@@ -1,0 +1,67 @@
+# Sistema de Inventário de Equipamentos
+
+## Descrição
+
+Mini sistema desenvolvido para a disciplina de Programação Orientada a Objetos (POO) — UFPB, 2026.1, que implementa um **inventário de equipamentos de TI** (notebooks, monitores, mouses, teclados, entre outros), com operações de cadastro, pesquisa, remoção e persistência de dados em arquivo.
+
+O sistema simula o controle patrimonial de uma empresa ou instituição, permitindo registrar equipamentos com informações como patrimônio, nome, categoria, marca, modelo e status de uso, além de salvar e recuperar esses dados entre execuções do programa por meio de serialização de objetos.
+
+## Funcionalidades
+
+- **Cadastrar equipamento**: adiciona um novo equipamento ao inventário, impedindo duplicidade de número de patrimônio.
+- **Pesquisar equipamento**: busca um equipamento pelo número de patrimônio.
+- **Remover equipamento**: remove um equipamento do inventário a partir do patrimônio.
+- **Listar equipamentos**: retorna todos os equipamentos cadastrados.
+- **Salvar dados**: grava o inventário atual em arquivo, garantindo persistência entre execuções.
+- **Recuperar dados**: carrega o inventário salvo anteriormente em arquivo.
+
+## Estrutura do projeto
+
+```
+src/exercicio5/
+├── Inventario.java                      # Interface com o contrato do sistema
+├── SistemaInventario.java               # Implementação principal (equivalente à AgendaDeAyla)
+├── SistemaInventarioTest.java           # Classe de testes (JUnit)
+├── Equipamento.java                     # Classe que representa um equipamento
+├── Categoria.java                       # Enum com as categorias de equipamento
+├── StatusEquipamento.java               # Enum com os status possíveis de um equipamento
+├── GravadorDeDados.java                 # Responsável pela persistência (serialização)
+├── EquipamentoJaExisteException.java    # Exceção de cadastro duplicado
+└── EquipamentoInexistenteException.java # Exceção de equipamento não encontrado
+```
+
+## Principais classes
+
+### `Inventario` (interface)
+Define o contrato do sistema: cadastro, pesquisa, remoção, listagem e persistência de equipamentos.
+
+### `SistemaInventario`
+Implementação principal do inventário, utilizando um `HashMap<String, Equipamento>` para armazenar os equipamentos indexados por patrimônio. Reúne as principais funcionalidades do sistema, com cadastro, pesquisa e remoção de dados.
+
+### `GravadorDeDados`
+Responsável pela gravação e recuperação dos dados em arquivo (`equipamentos.dat`), utilizando `ObjectOutputStream` e `ObjectInputStream`. Seus métodos lançam `IOException` em caso de falha na leitura/escrita.
+
+### `Equipamento`
+Classe que representa um equipamento do inventário, implementando `Serializable` para permitir a persistência via serialização.
+
+## Exceções personalizadas
+
+- **`EquipamentoJaExisteException`**: lançada ao tentar cadastrar um equipamento com patrimônio já existente.
+- **`EquipamentoInexistenteException`**: lançada ao tentar pesquisar ou remover um equipamento que não está cadastrado.
+
+## Testes
+
+A classe `SistemaInventarioTest` (JUnit 5) valida:
+
+- Cadastro, pesquisa e remoção de equipamentos.
+- Persistência de dados: salvar o inventário em arquivo e recuperá-lo em uma nova instância do sistema.
+
+## Tecnologias
+
+- Java 21
+- JUnit 5 (Jupiter)
+- Serialização de objetos (`java.io.Serializable`)
+
+## Autora
+
+M. Isabella — Curso de Sistemas de Informação, UFPB
