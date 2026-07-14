@@ -23,7 +23,7 @@ public class SistemaFuncionariosBomPratoTest {
 
         }
     }
-    @Testgit commit -m "Adiciona exercício 6 - Sistema de Funcionários"
+    @Testgit
     public void testPesquisarFuncionarioInexistente() {
         SistemaFuncionariosBomPrato sistema = new SistemaFuncionariosBomPrato();
 
