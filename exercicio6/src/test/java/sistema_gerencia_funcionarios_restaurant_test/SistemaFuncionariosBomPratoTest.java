@@ -23,7 +23,7 @@ public class SistemaFuncionariosBomPratoTest {
 
         }
     }
-    @Testgit
+    @Test
     public void testPesquisarFuncionarioInexistente() {
         SistemaFuncionariosBomPrato sistema = new SistemaFuncionariosBomPrato();
 
