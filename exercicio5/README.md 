@@ -2,66 +2,239 @@
 
 ## Descrição
 
-Mini sistema desenvolvido para a disciplina de Programação Orientada a Objetos (POO) — UFPB, 2026.1, que implementa um **inventário de equipamentos de TI** (notebooks, monitores, mouses, teclados, entre outros), com operações de cadastro, pesquisa, remoção e persistência de dados em arquivo.
+Mini sistema desenvolvido para a disciplina de **Programação Orientada a Objetos (POO)** da **Universidade Federal da Paraíba (UFPB)**, período **2026.1**.
 
-O sistema simula o controle patrimonial de uma empresa ou instituição, permitindo registrar equipamentos com informações como patrimônio, nome, categoria, marca, modelo e status de uso, além de salvar e recuperar esses dados entre execuções do programa por meio de serialização de objetos.
+O sistema implementa um **inventário de equipamentos de TI**, permitindo o gerenciamento de notebooks, monitores, mouses, teclados e outros dispositivos por meio das operações de cadastro, pesquisa, remoção, listagem e persistência de dados em arquivo, além de disponibilizar uma **interface gráfica (GUI)** desenvolvida com **Java Swing**.
+
+O objetivo é simular o controle patrimonial de uma empresa ou instituição, armazenando informações como patrimônio, nome, categoria, marca, modelo e status de utilização de cada equipamento.
+
+---
 
 ## Funcionalidades
 
-- **Cadastrar equipamento**: adiciona um novo equipamento ao inventário, impedindo duplicidade de número de patrimônio.
-- **Pesquisar equipamento**: busca um equipamento pelo número de patrimônio.
-- **Remover equipamento**: remove um equipamento do inventário a partir do patrimônio.
-- **Listar equipamentos**: retorna todos os equipamentos cadastrados.
-- **Salvar dados**: grava o inventário atual em arquivo, garantindo persistência entre execuções.
-- **Recuperar dados**: carrega o inventário salvo anteriormente em arquivo.
+- ✅ Cadastro de equipamentos
+- ✅ Pesquisa por patrimônio
+- ✅ Remoção de equipamentos
+- ✅ Listagem de todos os equipamentos
+- ✅ Persistência dos dados em arquivo (`equipamentos.dat`)
+- ✅ Interface gráfica utilizando Swing
+- ✅ Tratamento de exceções personalizadas
+- ✅ Testes automatizados com JUnit 5
+
+---
+
+## Interface gráfica
+
+O sistema possui uma janela principal (`TelaPrincipal`) construída com **Java Swing**, organizada por meio de uma barra de menus.
+
+### Arquivo
+
+- Salvar Dados
+
+### Equipamentos
+
+- Cadastrar Equipamento
+- Pesquisar Equipamento
+- Remover Equipamento
+- Listar Equipamentos
+
+Cada opção do menu é tratada por um **Controller**, responsável por:
+
+- receber as informações do usuário através de `JOptionPane`;
+- invocar as operações da interface `Inventario`;
+- tratar possíveis exceções;
+- exibir mensagens de sucesso ou erro ao usuário.
+
+Sempre que o usuário seleciona a opção **Salvar Dados**, o sistema grava o inventário em arquivo utilizando serialização de objetos, permitindo sua recuperação posteriormente.
+
+---
 
 ## Estrutura do projeto
 
+```text
+src/
+├── main/
+│   └── java/
+│       └── sistema_inventario_equipamentos_ti/
+│           ├── Inventario.java
+│           ├── SistemaInventario.java
+│           ├── Equipamento.java
+│           ├── Categoria.java
+│           ├── StatusEquipamento.java
+│           ├── GravadorDeDados.java
+│           ├── EquipamentoJaExisteException.java
+│           ├── EquipamentoInexistenteException.java
+│           │
+│           ├── controller/
+│           │   ├── InventarioAddController.java
+│           │   ├── InventarioSearchController.java
+│           │   ├── InventarioRemoveController.java
+│           │   └── InventarioListController.java
+│           │
+│           └── gui/
+│               ├── TelaPrincipal.java
+│               └── Aplicacao.java
+│
+└── test/
+    └── java/
+        └── sistema_inventario_equipamentos_ti/
+            └── SistemaInventarioTest.java
 ```
-src/exercicio5/
-├── Inventario.java                      # Interface com o contrato do sistema
-├── SistemaInventario.java               # Implementação principal (equivalente à AgendaDeAyla)
-├── SistemaInventarioTest.java           # Classe de testes (JUnit)
-├── Equipamento.java                     # Classe que representa um equipamento
-├── Categoria.java                       # Enum com as categorias de equipamento
-├── StatusEquipamento.java               # Enum com os status possíveis de um equipamento
-├── GravadorDeDados.java                 # Responsável pela persistência (serialização)
-├── EquipamentoJaExisteException.java    # Exceção de cadastro duplicado
-└── EquipamentoInexistenteException.java # Exceção de equipamento não encontrado
-```
+
+---
 
 ## Principais classes
 
-### `Inventario` (interface)
-Define o contrato do sistema: cadastro, pesquisa, remoção, listagem e persistência de equipamentos.
+### Inventario
 
-### `SistemaInventario`
-Implementação principal do inventário, utilizando um `HashMap<String, Equipamento>` para armazenar os equipamentos indexados por patrimônio. Reúne as principais funcionalidades do sistema, com cadastro, pesquisa e remoção de dados.
+Interface que define o contrato do sistema, reunindo as operações principais:
 
-### `GravadorDeDados`
-Responsável pela gravação e recuperação dos dados em arquivo (`equipamentos.dat`), utilizando `ObjectOutputStream` e `ObjectInputStream`. Seus métodos lançam `IOException` em caso de falha na leitura/escrita.
+- cadastrar equipamentos;
+- pesquisar equipamentos;
+- remover equipamentos;
+- listar equipamentos;
+- salvar dados;
+- recuperar dados.
 
-### `Equipamento`
-Classe que representa um equipamento do inventário, implementando `Serializable` para permitir a persistência via serialização.
+Toda a interface está documentada com **Javadoc**.
+
+---
+
+### SistemaInventario
+
+Classe responsável pela implementação das funcionalidades do sistema.
+
+Utiliza um `HashMap<String, Equipamento>` para armazenar os equipamentos indexados pelo número de patrimônio, oferecendo operações de cadastro, pesquisa, remoção, listagem e persistência.
+
+---
+
+### Equipamento
+
+Representa um equipamento do inventário.
+
+Cada equipamento possui:
+
+- patrimônio;
+- nome;
+- categoria;
+- marca;
+- modelo;
+- status.
+
+A classe implementa `Serializable`, permitindo sua gravação e recuperação em arquivo.
+
+---
+
+### GravadorDeDados
+
+Responsável pela persistência dos dados utilizando:
+
+- `ObjectOutputStream`
+- `ObjectInputStream`
+
+Os equipamentos são armazenados no arquivo:
+
+```text
+equipamentos.dat
+```
+
+Se ocorrer algum erro durante a leitura ou gravação, os métodos lançam uma `IOException`.
+
+---
+
+### TelaPrincipal
+
+Classe responsável pela interface gráfica do sistema.
+
+Estende `JFrame`, monta toda a barra de menus da aplicação e delega cada operação para um controller específico.
+
+---
+
+### Controllers
+
+Cada controller implementa `ActionListener` e possui uma única responsabilidade:
+
+- cadastrar equipamentos;
+- pesquisar equipamentos;
+- remover equipamentos;
+- listar equipamentos.
+
+Essa abordagem segue o padrão **Controller**, separando a interface gráfica da lógica de negócio do sistema.
+
+---
 
 ## Exceções personalizadas
 
-- **`EquipamentoJaExisteException`**: lançada ao tentar cadastrar um equipamento com patrimônio já existente.
-- **`EquipamentoInexistenteException`**: lançada ao tentar pesquisar ou remover um equipamento que não está cadastrado.
+O sistema utiliza exceções específicas para tornar o tratamento de erros mais claro.
+
+- `EquipamentoJaExisteException` — lançada quando é feita uma tentativa de cadastrar um equipamento com patrimônio já existente.
+
+- `EquipamentoInexistenteException` — lançada quando um equipamento não é encontrado durante uma pesquisa ou remoção.
+
+---
 
 ## Testes
 
-A classe `SistemaInventarioTest` (JUnit 5) valida:
+O projeto possui testes automatizados utilizando **JUnit 5**.
 
-- Cadastro, pesquisa e remoção de equipamentos.
-- Persistência de dados: salvar o inventário em arquivo e recuperá-lo em uma nova instância do sistema.
+Os testes verificam:
 
-## Tecnologias
+- cadastro de equipamentos;
+- pesquisa de equipamentos;
+- remoção de equipamentos;
+- persistência dos dados através da gravação e recuperação em arquivo.
+
+---
+
+## Como executar
+
+1. Clone este repositório.
+
+2. Abra o projeto em uma IDE Java compatível, como:
+
+   - IntelliJ IDEA
+   - Visual Studio Code
+
+3. Execute a classe:
+
+```text
+Aplicacao.java
+```
+
+localizada no pacote:
+
+```text
+sistema_inventario_equipamentos_ti.gui
+```
+
+---
+
+## Tecnologias utilizadas
+
+### Tecnologias
 
 - Java 21
-- JUnit 5 (Jupiter)
-- Serialização de objetos (`java.io.Serializable`)
+- Swing
+- Maven
+- JUnit 5
+
+### Conceitos utilizados
+
+- Programação Orientada a Objetos (POO)
+- Interfaces
+- Coleções (`HashMap`)
+- Serialização de Objetos (`Serializable`)
+- Tratamento de Exceções
+- Padrão Controller
+- Interface gráfica com Swing
+
+---
 
 ## Autora
 
-M. Isabella — Curso de Sistemas de Informação, UFPB
+**Isabella Lima**
+
+Graduanda em **Sistemas de Informação**
+**Universidade Federal da Paraíba (UFPB)**
+
+GitHub: **@IsaMariaLS**
